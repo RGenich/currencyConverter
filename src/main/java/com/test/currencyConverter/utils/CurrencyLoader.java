@@ -21,13 +21,13 @@ import java.util.List;
 
 @Component
 public class CurrencyLoader {
-    private final static String CURRENCY_URL = "http://www.cbr.ru/scripts/XML_daily.asp";
+    private final static String CURRENCY_URL = "https://www.cbr.ru/scripts/XML_daily.asp";
     @Autowired
     private CurrencyService currencyService;
     @Autowired
     private RateService rateService;
 
-    public XMLValCurs loadCurrency(LocalDate date) throws JsonProcessingException {
+    public XMLValCurs loadCurrency(LocalDate date) {
         String additionalUrlParam = "";
         if (date != null) {
             additionalUrlParam = "/?date_req=" + localDateToString(date);
@@ -36,9 +36,8 @@ public class CurrencyLoader {
         httpHeaders.setContentType(MediaType.APPLICATION_XML);
 
         RestTemplate restTemplate = new RestTemplate();
-        XMLValCurs xmlData = restTemplate.getForObject(CURRENCY_URL + additionalUrlParam, XMLValCurs.class);
 
-        return xmlData;
+        return restTemplate.getForObject(CURRENCY_URL + additionalUrlParam, XMLValCurs.class);
     }
 
     public void createRates(XMLValCurs valCurs, LocalDate date) {

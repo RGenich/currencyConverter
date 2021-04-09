@@ -34,14 +34,11 @@ public class CurrencyLoader {
         }
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_XML);
-        HttpEntity<String> request = new HttpEntity<>(httpHeaders);
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> responseEntity = restTemplate.exchange(CURRENCY_URL + additionalUrlParam, HttpMethod.GET, request, String.class);
-        String xmlData = responseEntity.getBody();
+        XMLValCurs xmlData = restTemplate.getForObject(CURRENCY_URL + additionalUrlParam, XMLValCurs.class);
 
-        XmlMapper xmlMapper = new XmlMapper();
-        return xmlMapper.readValue(xmlData, XMLValCurs.class);
+        return xmlData;
     }
 
     public void createRates(XMLValCurs valCurs, LocalDate date) {
